@@ -6,6 +6,12 @@ var saveGIFButton = document.getElementById("saveGIFButton");
 var createFrame = document.getElementById("createFrame");
 var runFramesButton = document.getElementById("runFrames");
 
+if (window.File && window.FileReader && window.FileList && window.Blob) {
+    console.log("ok");
+} else {
+    alert('The File APIs are not fully supported in this browser.');
+}
+
 //buttons fill
 var allButton = document.getElementById("allButton");
 var upLeft = document.getElementById("upLeft");
@@ -276,16 +282,102 @@ function fillCuadrant(x, y) {
     for (var j = y; j < 80 + y; j = j + 20) {
         for (var i = x; i < 80 + x; i = i + 20) {
             ctx.fillRect(i, j, 10, 10);
-            referenceCanvasCTX.fillRect(i/10, j/10, 1, 1);
+            referenceCanvasCTX.fillRect(i / 10, j / 10, 1, 1);
         }
     }
 
     for (var j = 10 + y; j < 60 + y; j = j + 20) {
         for (var i = 10 + x; i < 60 + x; i = i + 20) {
             ctx.fillRect(i, j, 10, 10);
-            referenceCanvasCTX.fillRect(i/10, j/10, 1, 1);
+            referenceCanvasCTX.fillRect(i / 10, j / 10, 1, 1);
         }
     }
+}
+
+document.getElementById('file').addEventListener('change', handleFileSelect, false);
+
+function handleFileSelect(evt) {
+    var files = evt.target.files; // FileList object
+
+    // Loop through the FileList and render image files as thumbnails.
+    for (var i = 0, f; f = files[i]; i++) {
+        // Only process image files.
+        if (!f.type.match('image.*')) {
+            continue;
+        }
+        var reader = new FileReader();
+        // Closure to capture the file information.
+        reader.onload = (function (theFile) {
+            return function (e) {
+                // Render thumbnail.
+                var list = $('#list');
+                list.empty();
+                list.append('' +
+                    '<span>' +
+                    '<img id="uploadGif" class="thumb" ' +
+                    'src="' + e.target.result + '" ' +
+                    'rel:animated_src="' + e.target.result + '" ' +
+                    'title="' + escape(theFile.name) + '" alt="">' +
+                    '</span>');
+
+                var sup = new SuperGif({gif: document.getElementById('uploadGif')});
+                sup.load(function () {
+                    console.log('gif is loaded');
+                    console.log(sup);
+                    for (var i = 0; i < sup.get_length(); i++) {
+                        sup.move_to(i);
+                        //frameList.push(sup.get_canvas().toDataURL("image/png"));
+                        scaleCanvas(sup.get_canvas());
+                        frameReferenceList.push(sup.get_canvas().toDataURL("image/png"));
+                    }
+                    showFrames();
+                });
+            };
+        })(f);
+        // Read in the image file as a data URL.
+        reader.readAsDataURL(f);
+    }
+}
+
+function scaleCanvas(canvasToScale) {
+    var canvas = document.createElement('canvas');
+    canvas.width = 230;
+    canvas.height = 240;
+    var ctx = canvas.getContext('2d');
+    var ctxScale = canvasToScale.getContext('2d')
+    ctx.fillStyle = '#FFF';
+    ctx.fillRect(0, 0, 230, 240);
+    for (var x = 0, iX = 0; x < 23; x++, iX += 10) {
+        for (var y = 0, iY = 0; y < 24; y++, iY += 10) {
+            var pixel = ctxScale.getImageData(x, y, 1, 1).data;
+            var data = ctx.getImageData(iX, iY, x + 10, y + 10);
+            var pixels = data.data;
+            for (var i = 0; i < pixels.length; i += 4) {
+                pixels[i] = pixel[0];
+                pixels[i + 1] = pixel[1];
+                pixels[i + 2] = pixel[2];
+                pixels[i + 3] = pixel[3];
+            }
+            ctx.putImageData(data, iX, iY);
+        }
+    }
+    ctx.fillStyle = '#000';
+    ctx.fillRect(70, 0, 10, 240);
+    ctx.fillRect(150, 0, 10, 240);
+    ctx.fillRect(0, 70, 230, 10);
+    ctx.fillRect(0, 150, 230, 10);
+    ctx.fillRect(0, 230, 230, 10);
+    for (var j = 0; j < 240; j = j + 20) {
+        for (var i = 10; i < 220; i = i + 20) {
+            ctx.fillRect(i, j, 10, 10);
+        }
+    }
+    for (var j = 10; j < 240; j = j + 20) {
+        for (var i = 0; i < 240; i = i + 20) {
+            ctx.fillRect(i, j, 10, 10);
+        }
+    }
+    frameList.push(canvas.toDataURL("image/png"));
 }
 
 upLeft.addEventListener('click', function (e) {
