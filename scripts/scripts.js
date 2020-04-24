@@ -232,7 +232,8 @@ createGIFButton.addEventListener('click', function (e) {
         images: frameReferenceList,
         interval: speed / 1000,
         numFrames: 30,
-        numWorkers: 2
+        numWorkers: 2,
+        sampleInterval: 1/50
     };
 
     var method = 'createGIF';
