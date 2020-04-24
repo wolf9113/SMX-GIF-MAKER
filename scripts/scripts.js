@@ -131,6 +131,7 @@ function editFrame(position) {
     var image = new Image();
     image.src = imageSRC;
     ctx.drawImage(image, 0, 0, 230, 240);
+    referenceCanvasCTX.drawImage(image, 0, 0, 23, 24);
 }
 
 var counter = 0;
