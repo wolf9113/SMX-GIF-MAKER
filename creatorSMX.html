@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+  <!-- Font Awesome -->
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="/css/fontawesome/css/all.css" rel="stylesheet">
+
+  <title>SMX GIF</title>
+</head>
+<body>
+<div class="container-fluid">
+  <div class="card">
+    <div class="card-header">
+      Stepmaniax GIF generator
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col text-center">
+          <div class="card">
+            <div class="card-header">
+              Base
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col text-center">
+                  <canvas id="templateCanvas" width="230" height="240">
+                    Your browser does not support the HTML5 canvas tag.
+                  </canvas>
+                  <canvas hidden id="referenceCanvas" width="23" height="24">
+                    Your browser does not support the HTML5 canvas tag.
+                  </canvas>
+                </div>
+                <div class="col text-center">
+                  <div id="main-color"></div>
+                </div>
+              </div>
+
+              <br>
+              <div class="row">
+              </div>
+            </div>
+            <div class="card-footer">
+              <div class="row">
+                <div class="col text-center">
+                  <button id="createFrame" type="button" class="btn btn-primary">Create frame</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <br>
+          <div class="row">
+            <div class="col text-center">
+              <div class="card">
+                <div class="card-header">
+                  Result
+                  <div class="col text-center">
+                    <button id="createGIFButton" type="button" class="btn btn-primary">Crear GIF</button>
+                    <a id="saveGIFButton" hidden class="btn btn-primary" download>Guardar GIF</a>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <div class="row">
+                    <!--<div class="col text-center">
+                      <img id="generatedImage" src="template.png" alt="">
+                    </div>-->
+                    <div class="col text-center">
+                      <img id="gifImage" src="template.png" alt="">
+                      <img id="gifDownload" hidden src="template.png" alt="">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col text-center">
+          <div class="card">
+            <div class="card-header">
+              Frames
+              <button id="runFrames" style="display: none" type="button" class="btn btn-primary">Run</button>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <label for="speedInput">Speed(ms)</label>
+                <input id="speedInput" type="number" class="form-control">
+              </div>
+              <div id="frameList" class="row">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+<script src="scripts/vanilla-picker.js"></script>
+<script src='scripts/gifshot.js'></script>
+<script src="scripts/scripts.js"></script>
+</body>
+</html>
