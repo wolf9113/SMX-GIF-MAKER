@@ -1,0 +1,26 @@
+ul {
+    margin: 0;
+    padding: 0;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    list-style: none;
+}
+
+.frameItem {
+    margin: 10px;
+    outline: 2px solid black;
+}
+
+#custom-toggler {
+    position: absolute;
+    padding: 1em;
+    font: inherit;
+}
+
+#main-color {
+    display: inline-block;
+}
+
+#main-color .picker_sample, #main-color .picker_done {
+    display: none;
+}
