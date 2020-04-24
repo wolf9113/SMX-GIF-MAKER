@@ -62,13 +62,36 @@ var img = c.toDataURL("image/png");
 var generatedImage = document.getElementById("gifImage");
 generatedImage.src = img;
 
+function isValidTile(x, y) {
+    if (y > 0) {
+        if (((y + 1) % 8 === 0 || (x + 1) % 8 === 0)) {
+            return false
+        }
+    }
+    if (y % 2 === 0) {
+        return x % 2 === 0;
+    } else {
+        return x % 2 === 1;
+    }
+}
+
+function rgbToHex(r, g, b) {
+    if (r > 255 || g > 255 || b > 255)
+        throw "Invalid color component";
+    return ((r << 16) | (g << 8) | b).toString(16);
+}
+
 c.addEventListener('click', function (event) {
     var x = event.layerX,
         y = event.layerY;
+    var ctx = c.getContext("2d");
+    var p = ctx.getImageData(x, y, 1, 1).data;
+    if (!isValidTile(Math.floor(x / 10), Math.floor(y / 10)))
+        return
 
     var xOffset = Math.floor(x / 10) * 10;
     var yOffset = Math.floor(y / 10) * 10;
-    var ctx = c.getContext("2d");
+
     ctx.fillStyle = selectedColor;
     ctx.fillRect(xOffset, yOffset, 10, 10);
     referenceCanvasCTX.fillStyle = selectedColor;
