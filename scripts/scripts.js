@@ -1,9 +1,22 @@
 var c = document.getElementById("templateCanvas");
 var referenceCanvas = document.getElementById("referenceCanvas");
 var createGIFButton = document.getElementById("createGIFButton");
+
 var saveGIFButton = document.getElementById("saveGIFButton");
 var createFrame = document.getElementById("createFrame");
 var runFramesButton = document.getElementById("runFrames");
+
+//buttons fill
+var allButton = document.getElementById("allButton");
+var upLeft = document.getElementById("upLeft");
+var up = document.getElementById("up");
+var upRight = document.getElementById("upRight");
+var centerLeft = document.getElementById("centerLeft");
+var center = document.getElementById("center");
+var centerRight = document.getElementById("centerRight");
+var downLeft = document.getElementById("downLeft");
+var down = document.getElementById("down");
+var downRight = document.getElementById("downRight");
 
 var selectedColor = '#000';
 var frameList = [];
@@ -26,20 +39,24 @@ var colorPicker = new Picker({
 
 var ctx = c.getContext("2d");
 var referenceCanvasCTX = referenceCanvas.getContext("2d");
+drawCanvas(true);
+drawReferenceCanvas(true);
 
-drawCanvas();
-drawReferenceCanvas();
-
-function drawReferenceCanvas() {
-    referenceCanvasCTX.fillStyle = '#FFF';
-    referenceCanvasCTX.fillRect(0, 0, 23, 24);
+function drawReferenceCanvas(init) {
+    if (init) {
+        referenceCanvasCTX.fillStyle = '#FFF';
+        referenceCanvasCTX.fillRect(0, 0, 23, 24);
+    }
     referenceCanvasCTX.fillStyle = selectedColor
 }
 
-function drawCanvas() {
-    ctx.fillStyle = '#FFF';
-    ctx.fillRect(0, 0, 230, 240);
-    ctx.fillStyle = selectedColor
+function drawCanvas(init) {
+    if (init) {
+        ctx.fillStyle = '#FFF';
+        ctx.fillRect(0, 0, 230, 240);
+    }
+
+    ctx.fillStyle = '#000';
     ctx.fillRect(70, 0, 10, 240);
     ctx.fillRect(150, 0, 10, 240);
     ctx.fillRect(0, 70, 230, 10);
@@ -56,6 +73,8 @@ function drawCanvas() {
             ctx.fillRect(i, j, 10, 10);
         }
     }
+
+    ctx.fillStyle = selectedColor
 }
 
 var img = c.toDataURL("image/png");
@@ -104,6 +123,15 @@ createFrame.addEventListener('click', function (event) {
     frameList.push(img);
     frameReferenceList.push(imgRef);
     showFrames();
+}, false);
+
+allButton.addEventListener('click', function (event) {
+    ctx.fillStyle = selectedColor;
+    ctx.fillRect(0, 0, 230, 240);
+
+    referenceCanvasCTX.fillStyle = selectedColor;
+    referenceCanvasCTX.fillRect(0, 0, 23, 24);
+    drawCanvas(false);
 }, false);
 
 runFramesButton.addEventListener('click', function (event) {
@@ -238,6 +266,53 @@ function downloadGIF(link, filename) {
 
 saveGIFButton.addEventListener('click', function (e) {
     console.log("save");
-    downloadGIF(this, 'animation.gif')
+    downloadGIF(this, 'animation.gif');
+}, false);
+
+function fillCuadrant(x, y) {
+    ctx.fillStyle = selectedColor
+    referenceCanvasCTX.fillStyle = selectedColor;
+
+    for (var j = y; j < 80 + y; j = j + 20) {
+        for (var i = x; i < 80 + x; i = i + 20) {
+            ctx.fillRect(i, j, 10, 10);
+            referenceCanvasCTX.fillRect(i/10, j/10, 1, 1);
+        }
+    }
+
+    for (var j = 10 + y; j < 60 + y; j = j + 20) {
+        for (var i = 10 + x; i < 60 + x; i = i + 20) {
+            ctx.fillRect(i, j, 10, 10);
+            referenceCanvasCTX.fillRect(i/10, j/10, 1, 1);
+        }
+    }
+}
+
+upLeft.addEventListener('click', function (e) {
+    fillCuadrant(0, 0);
+}, false);
+up.addEventListener('click', function (e) {
+    fillCuadrant(80, 0);
+}, false);
+upRight.addEventListener('click', function (e) {
+    fillCuadrant(160, 0);
+}, false);
+centerLeft.addEventListener('click', function (e) {
+    fillCuadrant(0, 80);
+}, false);
+center.addEventListener('click', function (e) {
+    fillCuadrant(80, 80);
+}, false);
+centerRight.addEventListener('click', function (e) {
+    fillCuadrant(160, 80);
+}, false);
+downLeft.addEventListener('click', function (e) {
+    fillCuadrant(0, 160);
+}, false);
+down.addEventListener('click', function (e) {
+    fillCuadrant(80, 160);
+}, false);
+downRight.addEventListener('click', function (e) {
+    fillCuadrant(160, 160);
 }, false);
 

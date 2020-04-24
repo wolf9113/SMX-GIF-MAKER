@@ -34,18 +34,93 @@
             <div class="card-body">
               <div class="row">
                 <div class="col text-center">
-                  <canvas id="templateCanvas" width="230" height="240">
-                    Your browser does not support the HTML5 canvas tag.
-                  </canvas>
-                  <canvas hidden id="referenceCanvas" width="23" height="24">
-                    Your browser does not support the HTML5 canvas tag.
-                  </canvas>
+                  <div class="card">
+                    <div class="card-header">
+                      Color picker
+                    </div>
+                    <div class="card-body">
+                      <div class="row">
+                        <div class="col text-center">
+                          <canvas id="templateCanvas" width="230" height="240">
+                            Your browser does not support the HTML5 canvas tag.
+                          </canvas>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <canvas hidden id="referenceCanvas" width="23" height="24">
+                          Your browser does not support the HTML5 canvas tag.
+                        </canvas>
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 <div class="col text-center">
-                  <div id="main-color"></div>
+                  <div class="card">
+                    <div class="card-header">
+                      Fill color
+                    </div>
+                    <div class="card-body">
+                      <div class="row">
+                        <div class="col-md-12 text-center">
+                          <button id="allButton" class="btn btn-outline-danger"> ALL</button>
+                        </div>
+                      </div>
+                      <br>
+                      <div class="row">
+                        <div class="col-md-4 text-center">
+                          <button id="upLeft" class="btn btn-outline-primary"><i class="fa fa-circle-o"></i></button>
+                        </div>
+                        <div class="col-md-4 text-center">
+                          <button id="up" class="btn btn-outline-primary"><i class="fa fa-arrow-circle-o-up"></i>
+                          </button>
+                        </div>
+                        <div class="col-md-4 text-center">
+                          <button id="upRight" class="btn btn-outline-primary"><i class="fa fa-circle-o"></i></button>
+                        </div>
+                      </div>
+                      <br>
+                      <div class="row">
+                        <div class="col-md-4 text-center">
+                          <button id="centerLeft" class="btn btn-outline-primary"><i
+                              class="fa fa-arrow-circle-o-left"></i>
+                          </button>
+                        </div>
+                        <div class="col-md-4 text-center">
+                          <button id="center" class="btn btn-outline-primary"><i class="fa fa-circle-o"></i></button>
+                        </div>
+                        <div class="col-md-4 text-center">
+                          <button id="centerRight" class="btn btn-outline-primary"><i
+                              class="fa fa-arrow-circle-o-right"></i></button>
+                        </div>
+                      </div>
+                      <br>
+                      <div class="row">
+                        <div class="col-md-4 text-center">
+                          <button id="downLeft" class="btn btn-outline-primary"><i class="fa fa-circle-o"></i></button>
+                        </div>
+                        <div class="col-md-4 text-center">
+                          <button id="down" class="btn btn-outline-primary"><i class="fa fa-arrow-circle-o-down"></i>
+                          </button>
+                        </div>
+                        <div class="col-md-4 text-center">
+                          <button id="downRight" class="btn btn-outline-primary"><i class="fa fa-circle-o"></i></button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col text-center">
+                  <div class="card">
+                    <div class="card-header">
+                      Color picker
+                    </div>
+                    <div class="card-body">
+                      <div id="main-color"></div>
+                    </div>
+                  </div>
                 </div>
               </div>
-
               <br>
               <div class="row">
               </div>
