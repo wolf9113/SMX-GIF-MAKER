@@ -27,6 +27,7 @@ var downRight = document.getElementById("downRight");
 var selectedColor = '#000';
 var frameList = [];
 var frameReferenceList = [];
+var frameCanvasList = [];
 var frameListHTML = $("#frameList");
 var speed = 200;
 var speedInput = $("#speedInput");
@@ -52,6 +53,23 @@ function drawReferenceCanvas(init) {
     if (init) {
         referenceCanvasCTX.fillStyle = '#FFF';
         referenceCanvasCTX.fillRect(0, 0, 23, 24);
+    }
+    referenceCanvasCTX.fillStyle = '#000';
+    referenceCanvasCTX.fillRect(7, 0, 1, 24);
+    referenceCanvasCTX.fillRect(15, 0, 1, 24);
+    referenceCanvasCTX.fillRect(0, 7, 23, 1);
+    referenceCanvasCTX.fillRect(0, 15, 23, 1);
+    referenceCanvasCTX.fillRect(0, 23, 23, 1);
+    for (var j = 0; j < 24; j = j + 2) {
+        for (var i = 1; i < 22; i = i + 2) {
+            referenceCanvasCTX.fillRect(i, j, 1, 1);
+        }
+    }
+
+    for (var j = 1; j < 24; j = j + 2) {
+        for (var i = 0; i < 24; i = i + 2) {
+            referenceCanvasCTX.fillRect(i, j, 1, 1);
+        }
     }
     referenceCanvasCTX.fillStyle = selectedColor
 }
@@ -106,28 +124,58 @@ function rgbToHex(r, g, b) {
     return ((r << 16) | (g << 8) | b).toString(16);
 }
 
+document.onmouseup = mouseUp;
+document.onmousedown = mouseDown;
+var mouseDownState = false;
+
+function mouseDown(ev) {
+    mouseDownState = true;
+}
+
+function mouseUp(ev) {
+    mouseDownState = false;
+}
+
 c.addEventListener('click', function (event) {
     var x = event.layerX,
         y = event.layerY;
-    var ctx = c.getContext("2d");
-    var p = ctx.getImageData(x, y, 1, 1).data;
-    if (!isValidTile(Math.floor(x / 10), Math.floor(y / 10)))
-        return
 
     var xOffset = Math.floor(x / 10) * 10;
     var yOffset = Math.floor(y / 10) * 10;
 
-    ctx.fillStyle = selectedColor;
-    ctx.fillRect(xOffset, yOffset, 10, 10);
-    referenceCanvasCTX.fillStyle = selectedColor;
-    referenceCanvasCTX.fillRect(xOffset / 10, yOffset / 10, 1, 1);
+    paintTile(xOffset, yOffset);
 }, false);
+
+c.addEventListener('mousemove', function (event) {
+    if (!mouseDownState) {
+        return;
+    }
+    var x = event.layerX,
+        y = event.layerY;
+
+    var xOffset = Math.floor(x / 10) * 10;
+    var yOffset = Math.floor(y / 10) * 10;
+
+    paintTile(xOffset, yOffset);
+}, false);
+
+function paintTile(x, y) {
+    var ctx = c.getContext("2d");
+    if (!isValidTile(Math.floor(x / 10), Math.floor(y / 10)))
+        return
+
+    ctx.fillStyle = selectedColor;
+    ctx.fillRect(x, y, 10, 10);
+    referenceCanvasCTX.fillStyle = selectedColor;
+    referenceCanvasCTX.fillRect(x / 10, y / 10, 1, 1);
+}
 
 createFrame.addEventListener('click', function (event) {
     var img = c.toDataURL("image/png");
     var imgRef = referenceCanvas.toDataURL("image/png");
     frameList.push(img);
     frameReferenceList.push(imgRef);
+    frameCanvasList.push(referenceCanvas);
     showFrames();
 }, false);
 
@@ -222,7 +270,6 @@ createGIFButton.addEventListener('click', function (e) {
         gifHeight: 240,
         images: frameList,
         interval: speed / 1000,
-        numFrames: 30,
         numWorkers: 2
     };
 
@@ -231,9 +278,8 @@ createGIFButton.addEventListener('click', function (e) {
         gifHeight: 24,
         images: frameReferenceList,
         interval: speed / 1000,
-        numFrames: 30,
-        numWorkers: 2,
-        sampleInterval: 1/50
+        numWorkers: 4,
+        sampleInterval: 1 / 100
     };
 
     var method = 'createGIF';
@@ -262,6 +308,7 @@ createGIFButton.addEventListener('click', function (e) {
             console.log('obj.errorMsg', obj.errorMsg);
         }
     });
+
 }, false);
 
 
@@ -330,6 +377,7 @@ function handleFileSelect(evt) {
                         //frameList.push(sup.get_canvas().toDataURL("image/png"));
                         scaleCanvas(sup.get_canvas());
                         frameReferenceList.push(sup.get_canvas().toDataURL("image/png"));
+                        frameCanvasList.push(sup.get_canvas());
                     }
                     showFrames();
                 });
