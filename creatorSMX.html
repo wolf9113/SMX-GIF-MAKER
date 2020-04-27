@@ -33,7 +33,7 @@
             <div class="card-body">
               <div class="row">
                 <div class="col text-center">
-                  <div class="card">
+                  <div class="card" style="height: 400px">
                     <div class="card-header">
                       Preview
                     </div>
@@ -58,7 +58,7 @@
                   </div>
                 </div>
                 <div class="col text-center">
-                  <div class="card">
+                  <div class="card" style="height: 400px">
                     <div class="card-header">
                       Fill color
                     </div>
@@ -118,12 +118,33 @@
                 </div>
 
                 <div class="col text-center">
-                  <div class="card">
+                  <div class="card" style="height: 400px">
                     <div class="card-header">
                       Color picker
                     </div>
                     <div class="card-body">
-                      <div id="main-color"></div>
+                      <!--<div id="main-color"></div>-->
+                      <div class="row">
+                        <div class="col">
+                          <div class="row">
+                            <div class="col-md-12 text-center">
+                              <canvas id="colorCanvas" width="100" height="200">
+                              </canvas>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-12 text-center">
+                              <label>Selected color</label>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-12 text-center">
+                              <canvas id="selectedColorCanvas" width="100" height="50">
+                              </canvas>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -158,8 +179,8 @@
                       <img id="generatedImage" src="template.png" alt="">
                     </div>-->
                     <div class="col-md-12">
-                        <img id="gifImage" src="template.png" alt="">
-                        <img id="gifDownload" width="230" height="240" src="template.png" alt="">
+                      <img id="gifImage" src="template.png" alt="">
+                      <img id="gifDownload" width="230" height="240" src="template.png" alt="">
                     </div>
                     <div class="col-md-12">
                       <label>*if the gif get blurry between frames you need create it again</label>

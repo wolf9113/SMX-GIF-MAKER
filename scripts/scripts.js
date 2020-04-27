@@ -1,7 +1,10 @@
 var c = document.getElementById("templateCanvas");
 var referenceCanvas = document.getElementById("referenceCanvas");
-var createGIFButton = document.getElementById("createGIFButton");
+var colorCanvas = document.getElementById("colorCanvas");
+var selectedColorCanvas = document.getElementById("selectedColorCanvas");
 
+
+var createGIFButton = document.getElementById("createGIFButton");
 var saveGIFButton = document.getElementById("saveGIFButton");
 var createFrame = document.getElementById("createFrame");
 var runFramesButton = document.getElementById("runFrames");
@@ -46,8 +49,53 @@ var colorPicker = new Picker({
 
 var ctx = c.getContext("2d");
 var referenceCanvasCTX = referenceCanvas.getContext("2d");
+var colorCTX = colorCanvas.getContext("2d");
+var selectedColorCTX = selectedColorCanvas.getContext("2d");
+setSelectedColor()
+
 drawCanvas(true);
 drawReferenceCanvas(true);
+drawColorCanvas();
+
+function setSelectedColor() {
+    selectedColorCTX.fillStyle = selectedColor;
+    selectedColorCTX.fillRect(0, 0, 100, 50);
+    selectedColorCTX.fillStyle = "#000000";
+    selectedColorCTX.rect(0, 0, 100, 50);
+    selectedColorCTX.stroke();
+    selectedColorCTX.fillStyle = selectedColor;
+}
+
+function drawColorCanvas() {
+    colorCTX.fillStyle = "#000";
+    colorCTX.fillRect(0, 0, 50, 50);
+
+    colorCTX.fillStyle = "#ffffff";
+    colorCTX.fillRect(50, 0, 50, 50);
+
+    colorCTX.fillStyle = "#ff0000";
+    colorCTX.fillRect(0, 50, 50, 50);
+
+    colorCTX.fillStyle = "#00ff00";
+    colorCTX.fillRect(50, 50, 50, 50);
+
+    colorCTX.fillStyle = "#0000ff";
+    colorCTX.fillRect(0, 100, 50, 50);
+
+    colorCTX.fillStyle = "#ffff00";
+    colorCTX.fillRect(50, 100, 50, 50);
+
+    colorCTX.fillStyle = "#ff00ff";
+    colorCTX.fillRect(0, 150, 50, 50);
+
+    colorCTX.fillStyle = "#00ffff";
+    colorCTX.fillRect(50, 150, 50, 50);
+
+    colorCTX.fillStyle = "#000000";
+    colorCTX.rect(0, 0, 100, 200);
+    colorCTX.stroke();
+
+}
 
 function drawReferenceCanvas(init) {
     if (init) {
@@ -118,10 +166,13 @@ function isValidTile(x, y) {
     }
 }
 
+function componentToHex(c) {
+    var hex = c.toString(16);
+    return hex.length == 1 ? "0" + hex : hex;
+}
+
 function rgbToHex(r, g, b) {
-    if (r > 255 || g > 255 || b > 255)
-        throw "Invalid color component";
-    return ((r << 16) | (g << 8) | b).toString(16);
+    return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
 }
 
 document.onmouseup = mouseUp;
@@ -157,6 +208,27 @@ c.addEventListener('mousemove', function (event) {
     var yOffset = Math.floor(y / 10) * 10;
 
     paintTile(xOffset, yOffset);
+}, false);
+
+colorCanvas.addEventListener('click', function (event) {
+    var x = event.layerX,
+        y = event.layerY;
+
+    var pixel = colorCTX.getImageData(x, y, 1, 1).data;
+    selectedColor = rgbToHex(pixel[0], pixel[1], pixel[2]);
+    setSelectedColor();
+}, false);
+
+colorCanvas.addEventListener('mousemove', function (event) {
+    if (!mouseDownState) {
+        return;
+    }
+    var x = event.layerX,
+        y = event.layerY;
+
+    var pixel = colorCTX.getImageData(x, y, 1, 1).data;
+    selectedColor = rgbToHex(pixel[0], pixel[1], pixel[2]);
+    setSelectedColor();
 }, false);
 
 function paintTile(x, y) {
